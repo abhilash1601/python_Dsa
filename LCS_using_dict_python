@@ -1,0 +1,25 @@
+dp={}
+def lcs(s1,s2):
+    global dp
+    if(len(s1)==0 or len(s2)==0):
+        return 0
+
+
+    print("string1---->",s1)
+    print("string2---->", s2)
+    if(s1 ,s2) in dp:
+        return dp[(s1,s2)]
+    else:
+
+
+        if(s1[-1]==s2[-1]):
+            dp[(s1,s2)]= 1+lcs(s1[0:len(s1)-1],s2[:len(s2)-1])
+        else:
+            a=lcs(s1,s2[:len(s2)-1])
+            b=lcs(s1[:len(s1)-1],s2)
+            dp[(s1,s2)]= max(a,b)
+    print(dp)
+    return dp[(s1,s2)]
+    
+    
+    print(lcs("AGGTAB", "GXTXAYB"))
