@@ -1,0 +1,165 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = self.right = None
+class BST:
+    def biildBST(self,root,ele):
+        if(root==None):
+            return Node(ele)
+        if(ele<root.data):
+            root.left=self.biildBST(root.left,ele)
+        else:
+            root.right=self.biildBST(root.right,ele)
+        return root
+    def inorder(self,root):
+        if(root==None):
+
+            return
+        self.inorder(root.left)
+        print(root.data,end=',')
+        self.inorder(root.right)
+    def recc_search(self,key,node):
+        if((node==None) or (node.data==key)):
+
+            return node
+
+        if(key<node.data):
+            return self.recc_search(key,node.left)
+        return self.recc_search(key, node.right)
+
+    def min_ele_rec(self,root,prev=None):
+        if(root==None):
+            print(prev.data)
+            return
+        return self.min_ele_rec(root.left,root)
+    def min_ele_iter(self,root):
+        curr=root
+        while curr.left is not None:
+            curr=curr.left
+        return curr.data
+    def pre_order_rec(self,root):
+        if(root==None):
+            return
+        print(root.data,end=",")
+        self.pre_order_rec(root.left)
+        self.pre_order_rec(root.right)
+    def pre_stack_iter(self,root):
+        if root is None:
+            return
+        stack=[]
+        st=[]
+        stack.append(root)
+        st.append(root.data)
+        while stack:
+            cur=stack.pop()
+            st.pop()
+            print(cur.data,end=",")
+            if(cur.right):
+                stack.append(cur.right)
+                st.append(cur.right.data)
+            if(cur.left):
+                stack.append(cur.left)
+                st.append(cur.left.data)
+    def inorder_it(self,root):
+        curr=root
+        stack=[]
+        st=[]
+        while True:
+            if(curr is not None):
+                stack.append(curr)
+                st.append(curr.data)
+                curr=curr.left
+            elif stack:
+                curr=stack.pop()
+                st.pop()
+                print(curr.data)
+                curr=curr.right
+            else:
+
+                break
+    def post_ordr(self,root):
+        if (root==None):
+            return
+        self.post_ordr(root.left)
+        self.post_ordr(root.right)
+        print(root.data,end=',')
+    def post_iter_two_stack(self,root):
+        if root is None:
+            return
+        recc_li,result_li=[],[]
+        recc_li.append(root)
+        while recc_li:
+            curr=recc_li.pop()
+            result_li.append(curr.data)
+            if curr.left:
+                recc_li.append(curr.left)
+            if curr.right:
+                recc_li.append(curr.right)
+
+        print(result_li[::-1])
+
+    def iterativePostorder2(self, root):
+        if root is None:
+            return
+        stack = []
+        prev = None
+        stack.append(root)
+        while stack:
+            current = stack[-1]
+            if prev == None or prev.left == current or prev.right == current:
+                if current.left:
+                    stack.append(current.left)
+                elif current.right:
+                    stack.append(current.right)
+                else:
+                    print(current.data)
+                    stack.pop()
+            elif prev == current.left:
+                if current.right:
+                    stack.append(current.right)
+            else:
+                print(current.data)
+                stack.pop()
+
+            prev = current
+    def succor(self,root):
+        root=root.right
+        while root.left:
+            root=root.left
+        return root.data
+    def perdcor(self,root):
+        root=root.left
+        while root.right:
+            root=root.right
+        return root.data
+
+
+    def delete_node(self,root,key):
+        if (root==None):
+            return None
+        if key<root.data:
+            root.left=self.delete_node(root.left,key)
+        elif(key>root.data):
+            root.right=self.delete_node(root.right,key)
+        else:
+            if(root.left==None and root.right==None):
+                root=None
+            elif(root.right):
+                root.data=self.succor(root)
+                root.right=self.delete_node(root.right,root.data)
+            else:
+                root.data=self.perdcor(root)
+                root.left=self.delete_node(root.left,root.data)
+        return root
+
+
+
+root=None
+b=BST()
+for i in [2, 1, 33, 0, 25, 40, 11, 34, 7, 12, 36, 13]:
+    root=b.biildBST(root,i)
+
+b.inorder(root)
+b.delete_node(root,33)
+print()
+b.inorder(root)
